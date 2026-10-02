@@ -25,6 +25,7 @@ class RegistrationForm(UserCreationForm):
         ]
 
     def clean_email(self):
+        '''Validate that the email address is not already registered.'''
         email = self.cleaned_data['email']
 
         if CustomUser.objects.filter(email=email).exists():
