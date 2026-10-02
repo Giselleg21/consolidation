@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+myenv/
+
+# Django
+*.log
+db.sqlite3
+media/
+
+# macOS
+.DS_Store
+
+# Sphinx
+docs/_build/
