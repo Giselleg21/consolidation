@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 '''Django settings for News_application project.'''
 
 from pathlib import Path
@@ -6,6 +7,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -71,11 +73,11 @@ WSGI_APPLICATION = 'News_application.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'news_database',
-        'USER': 'news_user',
-        'PASSWORD': 'news_password',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': '3306',
+        'PORT': os.environ.get('DB_PORT', '3306'),
     }
 }
 

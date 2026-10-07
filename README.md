@@ -30,11 +30,11 @@ Users can:
 
 The application uses a custom `CustomUser` model based on Django's `AbstractUser`.
 
-### Role-Based Permissions
+## Role-Based Permissions
 
 The application uses Django groups and permissions for different user roles.
 
-#### Reader
+### Reader
 
 Readers can:
 
@@ -46,7 +46,7 @@ Readers can:
 
 Readers cannot create, edit, delete, or approve articles.
 
-#### Journalist
+### Journalist
 
 Journalists can:
 
@@ -62,7 +62,7 @@ Journalists can:
 
 New articles created by journalists require editor approval before being publicly available.
 
-#### Editor
+### Editor
 
 Editors can:
 
@@ -74,7 +74,7 @@ Editors can:
 
 Editors are responsible for reviewing articles before they become approved.
 
-#### Publisher
+### Publisher
 
 Publishers can:
 
@@ -320,9 +320,13 @@ For example, from the MariaDB command line:
 
 ```sql
 CREATE DATABASE your_database_name;
+
 CREATE USER 'your_database_user'@'localhost' IDENTIFIED BY 'your_database_password';
+
 GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_database_user'@'localhost';
+
 FLUSH PRIVILEGES;
+
 EXIT;
 ```
 
@@ -330,19 +334,37 @@ EXIT;
 
 ## 6. Configure Database Credentials
 
-Open:
+The project uses a `.env` file to store local database configuration.
 
-```text
-News_application/settings.py
+A `.env.example` file is included in the repository as a template.
+
+Copy the example file:
+
+```bash
+cp .env.example .env
 ```
 
-Configure the Django database settings with the database name, username, password, host, and port created on the computer.
+Open the `.env` file:
 
-For local development, the database configuration should use the computer's MariaDB server.
+```bash
+nano .env
+```
 
-For a production deployment, credentials should be supplied securely through environment variables or another secrets-management system rather than being committed to source control.
+Enter the database details created in the previous step:
 
-The repository does not contain personal or production database credentials.
+```text
+DB_NAME=your_database_name
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_HOST=localhost
+DB_PORT=3306
+```
+
+Replace the placeholder values with your own MariaDB/MySQL database details.
+
+The `.env` file is excluded from Git using `.gitignore` and must not be committed. The Django `settings.py` file reads these values from the environment.
+
+Do not place real database passwords or other secrets in `settings.py`, `.env.example`, the README, or any other tracked file.
 
 ## 7. Apply Database Migrations
 
@@ -480,22 +502,15 @@ The database credentials must be configured for the environment where the applic
 
 Sphinx documentation is included in the `docs` directory.
 
-The documentation source includes API documentation generated from the Django project.
+The HTML documentation has already been generated and is included in the repository, so users do not need to build the documentation themselves.
 
-To build the HTML documentation, run:
-
-```bash
-cd docs
-make html
-```
-
-The generated HTML documentation is stored in:
+The generated documentation is available at:
 
 ```text
-docs/_build/html/
+docs/_build/html/index.html
 ```
 
-The generated `_build` directory is excluded from Git.
+Open `index.html` in a web browser to view the documentation.
 
 ## Main Application URLs
 
@@ -523,6 +538,7 @@ The main project structure is:
 
 ```text
 consolidation/
+
 │
 ├── News/
 │   ├── migrations/
@@ -597,7 +613,9 @@ The repository contains the Django source code, migrations, templates, static fi
 
 The project uses separate Git branches for the documented and containerised development work. These branches have been merged into the final `main` branch.
 
-Sensitive and unnecessary local files such as virtual environments, local databases, Python cache files, Sphinx build output, and operating-system files are excluded using `.gitignore`.
+Sensitive and unnecessary local files such as virtual environments, local databases, Python cache files, and operating-system files are excluded using `.gitignore`.
+
+The generated Sphinx documentation is included in the repository so that reviewers and users can access the documentation without having to build it themselves.
 
 ## Public Repository
 

@@ -18,5 +18,4 @@ media/
 # macOS
 .DS_Store
 
-# Sphinx
-docs/_build/
+.env
