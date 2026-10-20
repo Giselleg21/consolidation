@@ -1,624 +1,587 @@
-# Django News Application
+Django News Application
+Overview
+This project was developed as a Django capstone application. It demonstrates user authentication, role-based access control, article and newsletter management, subscriptions, editor approval, email notifications, and a RESTful API.
 
-## Overview
+The application uses MariaDB/MySQL as its database.
 
-This project is a Django capstone application demonstrating user authentication, role-based access control, article and newsletter management, subscriptions, editor approval, email notifications, and a RESTful API.
-
-The application uses **MariaDB/MySQL** as its database.
-
-The project has been prepared as a consolidation project and includes:
-
-* Git version control
-* A `requirements.txt` file
-* Sphinx documentation
-* A Dockerfile
-* A `.dockerignore` file
-* Project documentation
-* Automated tests
-
-## Features
-
-### User Authentication
-
+Features
+User Authentication
 Users can:
 
-* Register for an account.
-* Log in and log out.
-* Select a role during registration.
-* Be automatically assigned to the appropriate Django group.
-* Access functionality based on their assigned role.
+Register for an account.
 
-The application uses a custom `CustomUser` model based on Django's `AbstractUser`.
+Log in and log out.
 
-## Role-Based Permissions
+Select a role during registration.
 
-The application uses Django groups and permissions for different user roles.
+Be automatically assigned to the appropriate Django group.
 
-### Reader
+Access functionality based on their assigned role.
 
+The application uses a custom CustomUser model based on Django's AbstractUser.
+
+Role-Based Permissions
+The application uses Django groups and permissions for the different user roles.
+
+Reader
 Readers can:
 
-* View approved articles.
-* View newsletters.
-* Subscribe to publishers.
-* Subscribe to journalists.
-* View articles from their subscriptions.
+View approved articles.
+
+View newsletters.
+
+Subscribe to publishers.
+
+Subscribe to journalists.
+
+View articles from their subscriptions.
 
 Readers cannot create, edit, delete, or approve articles.
 
-### Journalist
-
+Journalist
 Journalists can:
 
-* Create articles.
-* View articles.
-* Update articles.
-* Delete articles.
-* Create newsletters.
-* Update newsletters.
-* Delete newsletters.
-* Add articles to newsletters.
-* Remove articles from newsletters.
+Create articles.
 
-New articles created by journalists require editor approval before being publicly available.
+View articles.
 
-### Editor
+Update articles.
 
+Delete articles.
+
+Publish articles independently.
+
+Create newsletters.
+
+Update newsletters.
+
+Delete newsletters.
+
+Add articles to newsletters.
+
+Remove articles from newsletters.
+
+New articles created by journalists require editor approval before being publicly available if they are published by a registered publication. Journalists can also choose to publish their articles independently.
+
+Editor
 Editors can:
 
-* View articles awaiting approval.
-* Approve articles.
-* Update articles.
-* Delete articles.
-* Manage newsletters.
+View articles awaiting approval.
+
+Approve articles.
+
+Update articles.
+
+Delete articles.
+
+Create, edit and delete their own nesletters.
+
+View, update, and delete newsletters associated with their publication.
 
 Editors are responsible for reviewing articles before they become approved.
 
-### Publisher
-
+Publisher
 Publishers can:
 
-* Create a publication.
-* Update their publication.
-* Delete their publication.
-* Manage journalists assigned to their publication.
-* Manage editors assigned to their publication.
-* View articles associated with their publication.
-* View newsletters created by journalists assigned to their publication.
+Create a publication.
 
-## Articles
+Update their publication.
 
+Delete their publication.
+
+Manage the journalists assigned to their publication.
+
+Manage the editors assigned to their publication.
+
+View the articles associated with their publication.
+
+View newsletters created by journalists assigned to their publication.
+
+Publishers are responsible for managing the journalists and editors associated with their publication.
+
+Articles
 Articles contain:
 
-* Title
-* Content
-* Author
-* Creation date
-* Approval status
-* Publisher
+Title
 
-Articles are initially created with `approved=False`.
+Content
 
-An editor can review an article and approve it. Once approved, the article becomes available to readers.
+Author
 
-## Article Approval
+Creation date
+
+Approval status
+
+Publisher
+
+Articles are initially created with approved=False.
+
+An editor can review an article and approve it. Once approved, the article becomes available to readers. If published independently, the journalist must personally publish the article before it becomes available to readers.
+
+Article Approval
+This applies only to articles published by a registered publication.
 
 The application includes an editor-only article review system.
 
+Editors can access the article review page and select an article to review. They can then approve the article.
+
 When an article is approved:
 
-1. The article's approval status is changed to `True`.
-2. Relevant subscribers are identified.
-3. Email notifications are generated.
-4. A POST request is made to the application's `/api/approved/` endpoint.
+The article's approval status is changed to True.
 
-During development, the email system uses Django's console email backend.
+Subscribers are identified.
 
-## Newsletters
+Email notifications are sent to relevant subscribers.
 
+A POST request is made to the application's /api/approved/ endpoint.
+
+The email system uses Django's console email backend during development.
+
+Newsletters
 Newsletters contain:
 
-* Title
-* Description
-* Creation date
-* Author
-* Associated articles
+Title
 
-Journalists can create and manage newsletters.
+Description
+
+Creation date
+
+Author
+
+Associated articles
+
+Journalists can create, update, and delete newsletters.
+
+Editors can view, update, and delete newsletters associated with their publication and create their own newsletters.
 
 Multiple articles can be associated with a newsletter. Removing an article from a newsletter does not delete the article itself.
 
-## Subscriptions
-
+Subscriptions
 Readers can subscribe to:
 
-* Publishers
-* Individual journalists
+Publishers
 
-The application uses Django `ManyToManyField` relationships to manage subscriptions.
+Individual journalists
+
+The application uses Django ManyToManyField relationships to manage subscriptions.
 
 The subscribed articles API filters approved articles according to the reader's subscriptions.
 
-## API
+Readers can manage their subscriptions on their dashboard or via the specific newsletter or article.
 
+API
 The application includes a Django REST Framework API.
 
-### API Serializers
-
+API Serializers
 The application includes serializers for:
 
-* Users
-* Publishers
-* Articles
-* Newsletters
+Users
 
-The `ArticleSerializer` includes:
+Publishers
 
-* ID
-* Title
-* Content
-* Author
-* Creation date
-* Approval status
-* Publisher
+Articles
+
+Newsletters
+
+The ArticleSerializer includes:
+
+ID
+
+Title
+
+Content
+
+Author
+
+Creation date
+
+Approval status
+
+Publisher
 
 The author, creation date, and approval status are controlled by the application rather than being freely supplied by API users.
 
-### API Endpoints
-
-| Endpoint                    | Method | Purpose                                 |
-| --------------------------- | ------ | --------------------------------------- |
-| `/api/token/`               | POST   | Obtain an authentication token          |
-| `/api/articles/`            | GET    | View approved articles                  |
-| `/api/articles/`            | POST   | Create an article as a journalist       |
-| `/api/articles/<id>/`       | GET    | View an approved article                |
-| `/api/articles/<id>/`       | PUT    | Update an article                       |
-| `/api/articles/<id>/`       | DELETE | Delete an article                       |
-| `/api/articles/subscribed/` | GET    | View articles from reader subscriptions |
-| `/api/approved/`            | POST   | Receive article approval information    |
-
+API Endpoints
+Endpoint	Method	Purpose
+/api/token/	POST	Obtain an authentication token
+/api/articles/	GET	View approved articles
+/api/articles/	POST	Create an article as a journalist
+/api/articles/<id>/	GET	View an approved article
+/api/articles/<id>/	PUT	Update an article
+/api/articles/<id>/	DELETE	Delete an article
+/api/articles/subscribed/	GET	View articles from reader subscriptions
+/api/approved/	POST	Receive article approval information
 Authentication is handled using Django REST Framework token authentication.
 
-## Signals
-
+Signals
 Django signals are used for automatic application behaviour.
 
 The application includes signals for:
 
-* Automatically assigning users to their role-based group when they register.
-* Detecting when an article changes from unapproved to approved.
-* Sending email notifications after an article is approved.
-* Sending approval information to the application's API endpoint.
+Automatically assigning users to their role-based group when they register.
 
-The signals are loaded through the `NewsConfig.ready()` method.
+Detecting when an article changes from unapproved to approved.
 
-## Database Models
+Sending email notifications after an article is approved.
 
-### CustomUser
+Sending approval information to the application's API endpoint.
 
-Extends Django's `AbstractUser` and includes:
+The signals are loaded through the NewsConfig.ready() method.
 
-* Role
-* Publisher subscriptions
-* Journalist subscriptions
+Database Models
+The main models are:
 
-### Publisher
+CustomUser
+Extends Django's AbstractUser and includes:
 
+Role
+
+Publisher subscriptions
+
+Journalist subscriptions
+
+Publisher
 Contains:
 
-* Name
-* Owner
-* Journalists
-* Editors
+Name
 
-### Article
+Owner
 
+Journalists
+
+Editors
+
+The Publisher model allows a publisher to manage the journalists and editors associated with their publication.
+
+Article
 Contains:
 
-* Title
-* Content
-* Author
-* Creation date
-* Approval status
-* Publisher
+Title
 
-### Newsletter
+Content
 
+Author
+
+Creation date
+
+Approval status
+
+Publisher
+
+Newsletter
 Contains:
 
-* Title
-* Description
-* Creation date
-* Author
-* Articles
+Title
 
-# Installation and Setup
+Description
 
+Creation date
+
+Author
+
+Articles
+
+Installation and Setup
 The following instructions explain how to install and run the project from a fresh computer.
 
-The local development instructions assume macOS and MariaDB/MySQL.
+The instructions below assume macOS and use MariaDB/MySQL.
 
-## 1. Clone the Repository
+1. Clone the Repository
+Open Terminal and clone the GitHub repository:
 
-Clone the consolidation repository:
+git clone https://github.com/Giselleg21/news_application.git
+Enter the project folder:
 
-```bash
-git clone https://github.com/Giselleg21/consolidation.git
-```
+cd news_application
+The project folder uses the lowercase naming convention news_application.
 
-Enter the project directory:
-
-```bash
-cd consolidation
-```
-
-## 2. Create a Virtual Environment
-
+2. Create a Virtual Environment
 Create a Python virtual environment:
 
-```bash
 python3 -m venv myenv
-```
-
 Activate the virtual environment:
 
-```bash
 source myenv/bin/activate
-```
+The terminal should now show (myenv) before the command prompt.
 
-The terminal should now show `(myenv)` before the command prompt.
+3. Install the Required Python Packages
+The project includes a requirements.txt file containing the Python packages and versions required by the application.
 
-The virtual environment is intentionally excluded from Git using `.gitignore`. Each computer should create its own virtual environment rather than committing the existing `myenv` directory.
+Install all required dependencies using:
 
-## 3. Install the Required Python Packages
-
-The project includes a `requirements.txt` file containing the required Python packages and versions.
-
-Install the dependencies with:
-
-```bash
 pip install -r requirements.txt
-```
+The requirements.txt file should contain the versions that are known to work with this project. For example:
 
-## 4. Install MariaDB
+Django==4.2.30
+djangorestframework==3.16.1
+mysqlclient==2.2.7
+requests==2.32.5
+Using specific package versions ensures that the same compatible versions are installed rather than automatically installing the newest available versions, which could introduce compatibility problems.
 
-If MariaDB is not already installed, it can be installed using Homebrew:
+4. Install MariaDB
+If MariaDB is not already installed, install it using Homebrew:
 
-```bash
 brew install mariadb
-```
+The pkg-config package may also be required when installing mysqlclient:
 
-The `pkg-config` package may also be required when installing `mysqlclient`:
-
-```bash
 brew install pkg-config
-```
+Check that MariaDB is available:
 
-Check the MariaDB installation:
-
-```bash
 mariadb --version
-```
-
 Check whether the MariaDB server is running:
 
-```bash
 mariadb-admin ping
-```
+The expected response is similar to:
 
+mysqld is alive
 If MariaDB is not running, start it with:
 
-```bash
 brew services start mariadb
-```
+5. Create the MariaDB Database
+Open the MariaDB command line:
 
-## 5. Create the Database
+sudo mariadb
+Create the database:
 
-Create a database and a local database user using credentials chosen by the person setting up the project.
+CREATE DATABASE news_database;
+Create a database user:
 
-For example, from the MariaDB command line:
+CREATE USER 'news_user'@'localhost' IDENTIFIED BY 'news_password';
+Give the user access to the project database:
 
-```sql
-CREATE DATABASE your_database_name;
-
-CREATE USER 'your_database_user'@'localhost' IDENTIFIED BY 'your_database_password';
-
-GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_database_user'@'localhost';
+GRANT ALL PRIVILEGES ON news_database.* TO 'news_user'@'localhost';
+Apply the privileges:
 
 FLUSH PRIVILEGES;
+Exit MariaDB:
 
 EXIT;
-```
+6. Configure the Database in Django
+Open:
 
-**Do not use these example values as real passwords or commit real database credentials to Git.**
+news_application/settings.py
+The database configuration should point to the MariaDB database:
 
-## 6. Configure Database Credentials
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'news_database',
+        'USER': 'news_user',
+        'PASSWORD': 'news_password',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+The database credentials should be changed if different credentials are used on another computer.
 
-The project uses a `.env` file to store local database configuration.
+For a production deployment, database passwords should be stored securely using environment variables rather than being committed directly to source control.
 
-A `.env.example` file is included in the repository as a template.
+7. Apply the Database Migrations
+Make sure the virtual environment is activated:
 
-Copy the example file:
+source myenv/bin/activate
+Run the migrations:
 
-```bash
-cp .env.example .env
-```
-
-Open the `.env` file:
-
-```bash
-nano .env
-```
-
-Enter the database details created in the previous step:
-
-```text
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_HOST=localhost
-DB_PORT=3306
-```
-
-Replace the placeholder values with your own MariaDB/MySQL database details.
-
-The `.env` file is excluded from Git using `.gitignore` and must not be committed. The Django `settings.py` file reads these values from the environment.
-
-Do not place real database passwords or other secrets in `settings.py`, `.env.example`, the README, or any other tracked file.
-
-## 7. Apply Database Migrations
-
-With the virtual environment activated, run:
-
-```bash
 python manage.py migrate
-```
+This creates the required database tables in MariaDB.
 
-## 8. Create the Application Groups
+8. Create the Application Groups
+The application uses Django groups for its role-based permissions.
 
 Run:
 
-```bash
 python manage.py create_groups
-```
-
 This creates the required:
 
-* Reader group
-* Journalist group
-* Editor group
-* Publisher group
+Reader group
 
-## 9. Create an Administrator Account
+Journalist group
 
+Editor group
+
+Publisher group
+
+and assigns the appropriate permissions.
+
+9. Create an Administrator Account
 Create a Django superuser:
 
-```bash
 python manage.py createsuperuser
-```
+Follow the prompts to enter:
 
-Follow the prompts to enter the administrator username, email address, and password.
+Username
 
-## 10. Check the Project
+Email address
 
+Password
+
+The superuser can then access the Django administration site.
+
+10. Check the Project
 Run Django's system check:
 
-```bash
 python manage.py check
-```
+The expected result is:
 
-The expected result is similar to:
-
-```text
 System check identified no issues (0 silenced).
-```
-
-## 11. Run the Tests
-
+11. Run the Tests
 Run the automated tests:
 
-```bash
 python manage.py test
-```
-
 The tests should complete successfully before using the application.
 
-## 12. Start the Development Server
+The project currently has 30 automated tests, all of which pass successfully.
 
+12. Start the Development Server
 Start Django's development server:
 
-```bash
 python manage.py runserver
-```
-
 The application will normally be available at:
 
-```text
 http://127.0.0.1:8000/
-```
+Open this address in a web browser.
 
-# Docker
+Main Application URLs
+The main pages include:
 
-The project includes a Dockerfile so that the Django application can be built and run in a container.
+/
+Home page.
 
-The Docker image installs the Python dependencies from `requirements.txt`, copies the Django project into the image, and exposes port `8000`.
+/register/
+Register a new Reader, Journalist, Editor, or Publisher.
 
-## 1. Build the Docker Image
+/login/
+Log into an existing account.
 
-From the project root, run:
+/articles/
+View articles.
 
-```bash
-docker build -t consolidation .
-```
+/articles/create/
+Create an article.
 
-## 2. Run the Docker Container
+/newsletters/
+View newsletters.
 
-The Django application requires access to a MariaDB/MySQL database.
+/newsletters/create/
+Create a newsletter.
 
-When using Docker Desktop on macOS, a database running on the host computer can be accessed using `host.docker.internal`.
+/editor/articles/
+Editor article review page.
 
-Run the container with:
+/publisher/create/
+Create a publication as a Publisher.
 
-```bash
-docker run -d \
-  --name consolidation-test \
-  -p 8000:8000 \
-  -e DB_HOST=host.docker.internal \
-  consolidation
-```
+/publisher/journalists/
+Manage journalists assigned to a publication.
 
-The application can then be accessed at:
+/publisher/editors/
+Manage editors assigned to a publication.
 
-```text
-http://localhost:8000/
-```
+/publisher/view/
+View the Publisher's publication.
 
-Check that the container is running with:
+/publisher/update/
+Update the Publisher's publication.
 
-```bash
-docker ps
-```
+/publisher/delete/
+Delete the Publisher's publication.
 
-To view the application logs:
+/admin/
+Django administration site.
 
-```bash
-docker logs consolidation-test
-```
+Project Structure
+The project follows Django's standard project and application structure.
 
-To stop and remove the container:
+Important directories include:
 
-```bash
-docker stop consolidation-test
-docker rm consolidation-test
-```
-
-### Docker Database Configuration
-
-The Docker container does not include a MariaDB server. A MariaDB/MySQL database must therefore be available separately.
-
-The database credentials must be configured for the environment where the application is being run. Real passwords and other secrets should not be placed in the Dockerfile, README, or Git repository.
-
-## Sphinx Documentation
-
-Sphinx documentation is included in the `docs` directory.
-
-The HTML documentation has already been generated and is included in the repository, so users do not need to build the documentation themselves.
-
-The generated documentation is available at:
-
-```text
-docs/_build/html/index.html
-```
-
-Open `index.html` in a web browser to view the documentation.
-
-## Main Application URLs
-
-| URL                       | Purpose                        |
-| ------------------------- | ------------------------------ |
-| `/`                       | Home page                      |
-| `/register/`              | Register a new user            |
-| `/login/`                 | Log into an existing account   |
-| `/articles/`              | View articles                  |
-| `/articles/create/`       | Create an article              |
-| `/newsletters/`           | View newsletters               |
-| `/newsletters/create/`    | Create a newsletter            |
-| `/editor/articles/`       | Editor article review page     |
-| `/publisher/create/`      | Create a publication           |
-| `/publisher/journalists/` | Manage publication journalists |
-| `/publisher/editors/`     | Manage publication editors     |
-| `/publisher/view/`        | View a publication             |
-| `/publisher/update/`      | Update a publication           |
-| `/publisher/delete/`      | Delete a publication           |
-| `/admin/`                 | Django administration site     |
-
-## Project Structure
-
-The main project structure is:
-
-```text
-consolidation/
+news_application/
 
 │
-├── News/
+
+├── news/
+
 │   ├── migrations/
+
 │   ├── static/
+
+│   │   └── News/
+
 │   ├── templates/
+
+│   │   └── News/
+
 │   ├── admin.py
-│   ├── api_views.py
+
 │   ├── apps.py
+
 │   ├── forms.py
+
 │   ├── models.py
+
 │   ├── serializers.py
+
 │   ├── signals.py
-│   ├── tests.py
+
 │   ├── urls.py
+
 │   └── views.py
+
 │
-├── News_application/
+
+├── news_application/
+
 │   ├── settings.py
+
 │   ├── urls.py
+
 │   ├── asgi.py
+
 │   └── wsgi.py
+
 │
-├── docs/
-│   ├── conf.py
-│   ├── index.rst
-│   └── ...
-│
+
 ├── manage.py
-├── requirements.txt
-├── Dockerfile
-├── .dockerignore
-├── .gitignore
-└── README.md
-```
 
-## Email Notifications
+├── README.md
 
+└── .gitignore
+The repository/project folder uses lowercase naming (news_application) to follow common Python and Django naming conventions.
+
+Python files, classes, functions, and variables follow standard Python naming conventions where applicable.
+
+Email Notifications
 During development, the application uses Django's console email backend:
 
-```python
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-```
+This means emails are displayed in the terminal rather than being sent through an external email service.
 
-This means email messages are displayed in the terminal rather than being sent through an external email service.
+The default sender address is:
 
-The development sender address is:
-
-```text
 news@example.com
-```
+Technologies Used
+Python
 
-## Technologies Used
+Django
 
-* Python
-* Django
-* Django REST Framework
-* MariaDB/MySQL
-* HTML
-* CSS
-* Bootstrap
-* Requests
-* Sphinx
-* Git
-* GitHub
-* Docker
+Django REST Framework
 
-## Version Control
+MariaDB/MySQL
 
+HTML
+
+CSS
+
+Bootstrap
+
+Requests
+
+Git
+
+GitHub
+
+Version Control
 The project is maintained using Git and hosted on GitHub.
 
-The repository contains the Django source code, migrations, templates, static files, tests, Docker configuration, and Sphinx documentation.
+The repository contains the Django source code, migrations, templates, static files, tests, and documentation.
 
-The project uses separate Git branches for the documented and containerised development work. These branches have been merged into the final `main` branch.
-
-Sensitive and unnecessary local files such as virtual environments, local databases, Python cache files, and operating-system files are excluded using `.gitignore`.
-
-The generated Sphinx documentation is included in the repository so that reviewers and users can access the documentation without having to build it themselves.
-
-## Public Repository
-
-The public GitHub repository for this consolidation project is:
-
-https://github.com/Giselleg21/consolidation
+Sensitive files such as virtual environments, local SQLite databases, environment files, Python cache files, and operating-system files are excluded using .gitignore.
