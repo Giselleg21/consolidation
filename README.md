@@ -1,545 +1,85 @@
 # Django News Application
 
+A role-based news publishing platform built with Django and Django REST Framework. This capstone project brings together user authentication, article publishing and approval, newsletters, subscriptions, API access, automated tests, Sphinx documentation, and Docker configuration.
+
+**Repository:** [Giselleg21/consolidation](https://github.com/Giselleg21/consolidation)
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [User Roles](#user-roles)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Database Configuration](#database-configuration)
+- [Running the Application](#running-the-application)
+- [REST API](#rest-api)
+- [Running Tests](#running-tests)
+- [Docker](#docker)
+- [Sphinx Documentation](#sphinx-documentation)
+- [Security](#security)
+
 ## Overview
 
-This project is a Django capstone application demonstrating user authentication, role-based access control, article and newsletter management, subscriptions, editor approval, email notifications, and a RESTful API.
+The Django News Application is a web-based news publishing platform that allows journalists to create articles, editors to review and approve content, publishers to manage their publications, and readers to access news and subscribe to publishers and journalists.
 
-The application uses **MariaDB/MySQL** as its database.
-
-The project has been prepared as a consolidation project and includes:
-
-* Git version control
-* A `requirements.txt` file
-* Sphinx documentation
-* A Dockerfile
-* A `.dockerignore` file
-* Project documentation
-* Automated tests
+The application implements role-based access control to ensure that users can only access functionality permitted by their roles. It also includes a REST API, database integration, email notification functionality, automated tests, and project documentation.
 
 ## Features
 
-### User Authentication
+- Custom user model and user authentication.
+- Role-based access control and Django groups.
+- Article creation, editing, deletion, and approval.
+- Editorial review and approval workflow.
+- Publisher management.
+- Journalist and editor assignments to publishers.
+- Newsletter creation and management.
+- Reader subscriptions to publishers and journalists.
+- Subscriber-focused article retrieval.
+- Email notification functionality for approved articles.
+- Django REST Framework API endpoints.
+- Token-based API authentication.
+- MariaDB/MySQL database integration.
+- Automated testing.
+- Sphinx documentation.
+- Docker configuration.
 
-Users can:
-
-* Register for an account.
-* Log in and log out.
-* Select a role during registration.
-* Be automatically assigned to the appropriate Django group.
-* Access functionality based on their assigned role.
-
-The application uses a custom `CustomUser` model based on Django's `AbstractUser`.
-
-## Role-Based Permissions
-
-The application uses Django groups and permissions for different user roles.
+## User Roles
 
 ### Reader
 
-Readers can:
-
-* View approved articles.
-* View newsletters.
-* Subscribe to publishers.
-* Subscribe to journalists.
-* View articles from their subscriptions.
-
-Readers cannot create, edit, delete, or approve articles.
+Readers can view approved articles and newsletters and subscribe to publishers and individual journalists. They can access content relevant to their subscriptions.
 
 ### Journalist
 
-Journalists can:
-
-* Create articles.
-* View articles.
-* Update articles.
-* Delete articles.
-* Create newsletters.
-* Update newsletters.
-* Delete newsletters.
-* Add articles to newsletters.
-* Remove articles from newsletters.
-
-New articles created by journalists require editor approval before being publicly available.
+Journalists can create and manage articles and newsletters. Articles must be approved by an editor before becoming available to readers. Journalists can also publish independently or associate their articles with a publisher, depending on the application workflow.
 
 ### Editor
 
-Editors can:
-
-* View articles awaiting approval.
-* Approve articles.
-* Update articles.
-* Delete articles.
-* Manage newsletters.
-
-Editors are responsible for reviewing articles before they become approved.
+Editors can review articles, approve submitted content, and manage articles and newsletters according to their assigned permissions.
 
 ### Publisher
 
-Publishers can:
-
-* Create a publication.
-* Update their publication.
-* Delete their publication.
-* Manage journalists assigned to their publication.
-* Manage editors assigned to their publication.
-* View articles associated with their publication.
-* View newsletters created by journalists assigned to their publication.
-
-## Articles
-
-Articles contain:
-
-* Title
-* Content
-* Author
-* Creation date
-* Approval status
-* Publisher
-
-Articles are initially created with `approved=False`.
-
-An editor can review an article and approve it. Once approved, the article becomes available to readers.
-
-## Article Approval
-
-The application includes an editor-only article review system.
-
-When an article is approved:
-
-1. The article's approval status is changed to `True`.
-2. Relevant subscribers are identified.
-3. Email notifications are generated.
-4. A POST request is made to the application's `/api/approved/` endpoint.
-
-During development, the email system uses Django's console email backend.
-
-## Newsletters
-
-Newsletters contain:
-
-* Title
-* Description
-* Creation date
-* Author
-* Associated articles
-
-Journalists can create and manage newsletters.
-
-Multiple articles can be associated with a newsletter. Removing an article from a newsletter does not delete the article itself.
-
-## Subscriptions
-
-Readers can subscribe to:
-
-* Publishers
-* Individual journalists
-
-The application uses Django `ManyToManyField` relationships to manage subscriptions.
-
-The subscribed articles API filters approved articles according to the reader's subscriptions.
-
-## API
-
-The application includes a Django REST Framework API.
-
-### API Serializers
-
-The application includes serializers for:
-
-* Users
-* Publishers
-* Articles
-* Newsletters
-
-The `ArticleSerializer` includes:
-
-* ID
-* Title
-* Content
-* Author
-* Creation date
-* Approval status
-* Publisher
-
-The author, creation date, and approval status are controlled by the application rather than being freely supplied by API users.
-
-### API Endpoints
-
-| Endpoint                    | Method | Purpose                                 |
-| --------------------------- | ------ | --------------------------------------- |
-| `/api/token/`               | POST   | Obtain an authentication token          |
-| `/api/articles/`            | GET    | View approved articles                  |
-| `/api/articles/`            | POST   | Create an article as a journalist       |
-| `/api/articles/<id>/`       | GET    | View an approved article                |
-| `/api/articles/<id>/`       | PUT    | Update an article                       |
-| `/api/articles/<id>/`       | DELETE | Delete an article                       |
-| `/api/articles/subscribed/` | GET    | View articles from reader subscriptions |
-| `/api/approved/`            | POST   | Receive article approval information    |
-
-Authentication is handled using Django REST Framework token authentication.
-
-## Signals
-
-Django signals are used for automatic application behaviour.
-
-The application includes signals for:
-
-* Automatically assigning users to their role-based group when they register.
-* Detecting when an article changes from unapproved to approved.
-* Sending email notifications after an article is approved.
-* Sending approval information to the application's API endpoint.
-
-The signals are loaded through the `NewsConfig.ready()` method.
-
-## Database Models
-
-### CustomUser
-
-Extends Django's `AbstractUser` and includes:
-
-* Role
-* Publisher subscriptions
-* Journalist subscriptions
-
-### Publisher
-
-Contains:
-
-* Name
-* Owner
-* Journalists
-* Editors
-
-### Article
-
-Contains:
-
-* Title
-* Content
-* Author
-* Creation date
-* Approval status
-* Publisher
-
-### Newsletter
-
-Contains:
-
-* Title
-* Description
-* Creation date
-* Author
-* Articles
-
-# Installation and Setup
-
-The following instructions explain how to install and run the project from a fresh computer.
-
-The local development instructions assume macOS and MariaDB/MySQL.
-
-## 1. Clone the Repository
-
-Clone the consolidation repository:
-
-```bash
-git clone https://github.com/Giselleg21/consolidation.git
-```
-
-Enter the project directory:
-
-```bash
-cd consolidation
-```
-
-## 2. Create a Virtual Environment
-
-Create a Python virtual environment:
-
-```bash
-python3 -m venv myenv
-```
-
-Activate the virtual environment:
-
-```bash
-source myenv/bin/activate
-```
-
-The terminal should now show `(myenv)` before the command prompt.
-
-The virtual environment is intentionally excluded from Git using `.gitignore`. Each computer should create its own virtual environment rather than committing the existing `myenv` directory.
-
-## 3. Install the Required Python Packages
-
-The project includes a `requirements.txt` file containing the required Python packages and versions.
-
-Install the dependencies with:
-
-```bash
-pip install -r requirements.txt
-```
-
-## 4. Install MariaDB
-
-If MariaDB is not already installed, it can be installed using Homebrew:
-
-```bash
-brew install mariadb
-```
-
-The `pkg-config` package may also be required when installing `mysqlclient`:
-
-```bash
-brew install pkg-config
-```
-
-Check the MariaDB installation:
-
-```bash
-mariadb --version
-```
-
-Check whether the MariaDB server is running:
-
-```bash
-mariadb-admin ping
-```
-
-If MariaDB is not running, start it with:
-
-```bash
-brew services start mariadb
-```
-
-## 5. Create the Database
-
-Create a database and a local database user using credentials chosen by the person setting up the project.
-
-For example, from the MariaDB command line:
-
-```sql
-CREATE DATABASE your_database_name;
-
-CREATE USER 'your_database_user'@'localhost' IDENTIFIED BY 'your_database_password';
-
-GRANT ALL PRIVILEGES ON your_database_name.* TO 'your_database_user'@'localhost';
-
-FLUSH PRIVILEGES;
-
-EXIT;
-```
-
-**Do not use these example values as real passwords or commit real database credentials to Git.**
-
-## 6. Configure Database Credentials
-
-The project uses a `.env` file to store local database configuration.
-
-A `.env.example` file is included in the repository as a template.
-
-Copy the example file:
-
-```bash
-cp .env.example .env
-```
-
-Open the `.env` file:
-
-```bash
-nano .env
-```
-
-Enter the database details created in the previous step:
-
-```text
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_HOST=localhost
-DB_PORT=3306
-```
-
-Replace the placeholder values with your own MariaDB/MySQL database details.
-
-The `.env` file is excluded from Git using `.gitignore` and must not be committed. The Django `settings.py` file reads these values from the environment.
-
-Do not place real database passwords or other secrets in `settings.py`, `.env.example`, the README, or any other tracked file.
-
-## 7. Apply Database Migrations
-
-With the virtual environment activated, run:
-
-```bash
-python manage.py migrate
-```
-
-## 8. Create the Application Groups
-
-Run:
-
-```bash
-python manage.py create_groups
-```
-
-This creates the required:
-
-* Reader group
-* Journalist group
-* Editor group
-* Publisher group
-
-## 9. Create an Administrator Account
-
-Create a Django superuser:
-
-```bash
-python manage.py createsuperuser
-```
-
-Follow the prompts to enter the administrator username, email address, and password.
-
-## 10. Check the Project
-
-Run Django's system check:
-
-```bash
-python manage.py check
-```
-
-The expected result is similar to:
-
-```text
-System check identified no issues (0 silenced).
-```
-
-## 11. Run the Tests
-
-Run the automated tests:
-
-```bash
-python manage.py test
-```
-
-The tests should complete successfully before using the application.
-
-## 12. Start the Development Server
-
-Start Django's development server:
-
-```bash
-python manage.py runserver
-```
-
-The application will normally be available at:
-
-```text
-http://127.0.0.1:8000/
-```
-
-# Docker
-
-The project includes a Dockerfile so that the Django application can be built and run in a container.
-
-The Docker image installs the Python dependencies from `requirements.txt`, copies the Django project into the image, and exposes port `8000`.
-
-## 1. Build the Docker Image
-
-From the project root, run:
-
-```bash
-docker build -t consolidation .
-```
-
-## 2. Run the Docker Container
-
-The Django application requires access to a MariaDB/MySQL database.
-
-When using Docker Desktop on macOS, a database running on the host computer can be accessed using `host.docker.internal`.
-
-Run the container with:
-
-```bash
-docker run -d \
-  --name consolidation-test \
-  -p 8000:8000 \
-  -e DB_HOST=host.docker.internal \
-  consolidation
-```
-
-The application can then be accessed at:
-
-```text
-http://localhost:8000/
-```
-
-Check that the container is running with:
-
-```bash
-docker ps
-```
-
-To view the application logs:
-
-```bash
-docker logs consolidation-test
-```
-
-To stop and remove the container:
-
-```bash
-docker stop consolidation-test
-docker rm consolidation-test
-```
-
-### Docker Database Configuration
-
-The Docker container does not include a MariaDB server. A MariaDB/MySQL database must therefore be available separately.
-
-The database credentials must be configured for the environment where the application is being run. Real passwords and other secrets should not be placed in the Dockerfile, README, or Git repository.
-
-## Sphinx Documentation
-
-Sphinx documentation is included in the `docs` directory.
-
-The HTML documentation has already been generated and is included in the repository, so users do not need to build the documentation themselves.
-
-The generated documentation is available at:
-
-```text
-docs/_build/html/index.html
-```
-
-Open `index.html` in a web browser to view the documentation.
-
-## Main Application URLs
-
-| URL                       | Purpose                        |
-| ------------------------- | ------------------------------ |
-| `/`                       | Home page                      |
-| `/register/`              | Register a new user            |
-| `/login/`                 | Log into an existing account   |
-| `/articles/`              | View articles                  |
-| `/articles/create/`       | Create an article              |
-| `/newsletters/`           | View newsletters               |
-| `/newsletters/create/`    | Create a newsletter            |
-| `/editor/articles/`       | Editor article review page     |
-| `/publisher/create/`      | Create a publication           |
-| `/publisher/journalists/` | Manage publication journalists |
-| `/publisher/editors/`     | Manage publication editors     |
-| `/publisher/view/`        | View a publication             |
-| `/publisher/update/`      | Update a publication           |
-| `/publisher/delete/`      | Delete a publication           |
-| `/admin/`                 | Django administration site     |
+Publishers can manage their publications, assign journalists and editors, and access content associated with their publication.
+
+## Technology Stack
+
+- **Programming Language:** Python
+- **Web Framework:** Django
+- **REST API:** Django REST Framework
+- **Database:** MariaDB/MySQL
+- **Frontend:** HTML, CSS, Bootstrap, and Django templates
+- **Documentation:** Sphinx
+- **Containerisation:** Docker
+- **Version Control:** Git and GitHub
+
+Dependency versions are specified in `requirements.txt`.
 
 ## Project Structure
 
-The main project structure is:
-
 ```text
 consolidation/
-
-│
 ├── News/
 │   ├── migrations/
 │   ├── static/
@@ -554,71 +94,236 @@ consolidation/
 │   ├── tests.py
 │   ├── urls.py
 │   └── views.py
-│
 ├── News_application/
 │   ├── settings.py
 │   ├── urls.py
 │   ├── asgi.py
 │   └── wsgi.py
-│
 ├── docs/
-│   ├── conf.py
-│   ├── index.rst
-│   └── ...
-│
-├── manage.py
-├── requirements.txt
-├── Dockerfile
 ├── .dockerignore
 ├── .gitignore
+├── Dockerfile
+├── manage.py
+├── requirements.txt
 └── README.md
 ```
 
-## Email Notifications
+## Installation
 
-During development, the application uses Django's console email backend:
+### 1. Clone the Repository
 
-```python
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+```bash
+git clone https://github.com/Giselleg21/consolidation.git
+cd consolidation
 ```
 
-This means email messages are displayed in the terminal rather than being sent through an external email service.
+### 2. Create a Virtual Environment
 
-The development sender address is:
+```bash
+python3 -m venv myenv
+```
+
+Activate the virtual environment on macOS or Linux:
+
+```bash
+source myenv/bin/activate
+```
+
+On Windows:
+
+```powershell
+myenv\Scripts\activate
+```
+
+### 3. Install Dependencies
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+If `mysqlclient` fails to install on macOS, ensure that the required MariaDB/MySQL client libraries and build tools are installed.
+
+### 4. Configure the Database
+
+Install and start MariaDB or MySQL if it is not already running.
+
+Create a database and database user for the application. Configure the database connection using the settings implemented in `News_application/settings.py`.
+
+### 5. Apply Migrations
+
+After configuring the database, run:
+
+```bash
+python manage.py migrate
+```
+
+If the project's custom `create_groups` management command is available, initialise the application groups with:
+
+```bash
+python manage.py create_groups
+```
+
+Create an administrator account:
+
+```bash
+python manage.py createsuperuser
+```
+
+Check the project configuration:
+
+```bash
+python manage.py check
+```
+
+## Database Configuration
+
+The application uses MariaDB/MySQL as its database.
+
+Before running migrations, ensure that the database server is running and that the database and database user configured in `News_application/settings.py` exist.
+
+A database administrator can create a database and dedicated user using commands such as:
+
+```sql
+CREATE DATABASE your_database_name;
+
+CREATE USER 'your_database_user'@'localhost'
+IDENTIFIED BY 'choose_a_strong_password';
+
+GRANT ALL PRIVILEGES ON your_database_name.*
+TO 'your_database_user'@'localhost';
+
+FLUSH PRIVILEGES;
+```
+
+Replace the example database name, username, and password with your own values. Ensure that the database settings in the Django project match your configuration.
+
+## Running the Application
+
+Start the Django development server:
+
+```bash
+python manage.py runserver
+```
+
+Open the application in your browser:
+
+[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+The available pages and functionality depend on the user's authentication status and assigned role.
+
+## REST API
+
+The application uses Django REST Framework to provide API functionality.
+
+The API includes endpoints for article retrieval and management, subscriber-related article retrieval, article approval, and token authentication.
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/token/` | POST | Obtain an authentication token |
+| `/api/articles/` | GET | Retrieve approved articles |
+| `/api/articles/` | POST | Create an article where permitted |
+| `/api/articles/<id>/` | GET | Retrieve an article by ID |
+| `/api/articles/<id>/` | PUT | Update an article where permitted |
+| `/api/articles/<id>/` | DELETE | Delete an article where permitted |
+| `/api/articles/subscribed/` | GET | Retrieve articles related to a reader's subscriptions |
+| `/api/approved/` | POST | Handle article-approval information |
+
+Replace `<id>` with the relevant article ID. Access to endpoints depends on the application's configured authentication and permission rules.
+
+### Token Authentication
+
+Send a POST request to `/api/token/` with valid user credentials:
+
+```json
+{
+    "username": "your_username",
+    "password": "your_password"
+}
+```
+
+For endpoints that require token authentication, include the token in the request header:
 
 ```text
-news@example.com
+Authorization: Token YOUR_TOKEN_HERE
 ```
 
-## Technologies Used
+Use credentials from your own local development environment. Never publish passwords or authentication tokens.
 
-* Python
-* Django
-* Django REST Framework
-* MariaDB/MySQL
-* HTML
-* CSS
-* Bootstrap
-* Requests
-* Sphinx
-* Git
-* GitHub
-* Docker
+## Running Tests
 
-## Version Control
+Run the automated test suite using:
 
-The project is maintained using Git and hosted on GitHub.
+```bash
+python manage.py test
+```
 
-The repository contains the Django source code, migrations, templates, static files, tests, Docker configuration, and Sphinx documentation.
+You can also run Django's system checks:
 
-The project uses separate Git branches for the documented and containerised development work. These branches have been merged into the final `main` branch.
+```bash
+python manage.py check
+```
 
-Sensitive and unnecessary local files such as virtual environments, local databases, Python cache files, and operating-system files are excluded using `.gitignore`.
+Review test output and error messages to identify any configuration problems or failing tests.
 
-The generated Sphinx documentation is included in the repository so that reviewers and users can access the documentation without having to build it themselves.
+## Docker
 
-## Public Repository
+The project includes a Dockerfile for building a container image.
 
-The public GitHub repository for this consolidation project is:
+Build the image from the repository root:
 
-https://github.com/Giselleg21/consolidation
+```bash
+docker build -t consolidation .
+```
+
+If the database is running on the host machine and is configured to accept connections from the container, Docker Desktop on macOS commonly allows access through `host.docker.internal`.
+
+Configure the database connection using the settings and configuration supported by the project. Ensure that the database is accessible from inside the container.
+
+Useful Docker commands:
+
+```bash
+docker ps
+docker logs consolidation-test
+docker stop consolidation-test
+docker rm consolidation-test
+```
+
+The Docker configuration is intended for development and assessment. Additional configuration is required for a secure production deployment.
+
+## Sphinx Documentation
+
+The project includes Sphinx documentation in the `docs/` directory.
+
+To generate the HTML documentation, run the following command from the project root:
+
+```bash
+python -m sphinx -b html docs docs/_build/html
+```
+
+Once generated, open the following file in your browser:
+
+```text
+docs/_build/html/index.html
+```
+
+The documentation provides a structured reference for the project and its code.
+
+## Security
+
+The following security practices should be followed when developing or deploying the application:
+
+- Keep database credentials and secret keys secure.
+- Do not commit passwords, API tokens, or other sensitive information to GitHub.
+- Apply authentication and role-based permissions to protected functionality.
+- Use a dedicated database user with appropriate permissions.
+- Do not use Django's development server for production deployments.
+- Review Django's deployment checklist before making the application publicly accessible.
+
+## Repository
+
+The source code, configuration files, tests, and documentation are maintained in the following GitHub repository:
+
+[https://github.com/Giselleg21/consolidation](https://github.com/Giselleg21/consolidation)
