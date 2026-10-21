@@ -25,7 +25,7 @@ A role-based news publishing platform built with Django and Django REST Framewor
 The Django News Application is a web-based news publishing platform that allows journalists to create articles, editors to review and approve content, publishers to manage their publications, and readers to access news and subscribe to publishers and journalists.
 
 The application implements role-based access control to ensure that users can only access functionality permitted by their roles. It also includes a REST API, database integration, email notification functionality, automated tests, and project documentation.
-=======
+
 This project was developed as a Django capstone application. It demonstrates user authentication, role-based access control, article and newsletter management, subscriptions, editor approval, email notifications, and a RESTful API.
 
 The application uses **MariaDB/MySQL** as its database.
@@ -50,7 +50,6 @@ The application uses **MariaDB/MySQL** as its database.
 - Docker configuration.
 
 ## User Roles
-=======
 Users can:
 
 * Register for an account.
@@ -72,7 +71,7 @@ The application uses Django groups and permissions for the different user roles.
 #### Reader
 
 Readers can view approved articles and newsletters and subscribe to publishers and individual journalists. They can access content relevant to their subscriptions.
-=======
+
 Readers can:
 
 * View approved articles.
@@ -90,7 +89,7 @@ Readers cannot create, edit, delete, or approve articles.
 #### Journalist
 
 Journalists can create and manage articles and newsletters. Articles must be approved by an editor before becoming available to readers. Journalists can also publish independently or associate their articles with a publisher, depending on the application workflow.
-=======
+
 Journalists can:
 
 * Create articles.
@@ -118,7 +117,7 @@ New articles created by journalists require editor approval before being publicl
 #### Editor
 
 Editors can review articles, approve submitted content, and manage articles and newsletters according to their assigned permissions.
-=======
+
 Editors can:
 
 * View articles awaiting approval.
