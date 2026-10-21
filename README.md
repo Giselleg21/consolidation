@@ -22,7 +22,6 @@ A role-based news publishing platform built with Django and Django REST Framewor
 
 ## Overview
 
-<<<<<<< HEAD
 The Django News Application is a web-based news publishing platform that allows journalists to create articles, editors to review and approve content, publishers to manage their publications, and readers to access news and subscribe to publishers and journalists.
 
 The application implements role-based access control to ensure that users can only access functionality permitted by their roles. It also includes a REST API, database integration, email notification functionality, automated tests, and project documentation.
@@ -30,9 +29,6 @@ The application implements role-based access control to ensure that users can on
 This project was developed as a Django capstone application. It demonstrates user authentication, role-based access control, article and newsletter management, subscriptions, editor approval, email notifications, and a RESTful API.
 
 The application uses **MariaDB/MySQL** as its database.
-
----
->>>>>>> bdcd5a427dd9d9bbd9b59c5c6e8c477bf069d32c
 
 ## Features
 
@@ -53,7 +49,6 @@ The application uses **MariaDB/MySQL** as its database.
 - Sphinx documentation.
 - Docker configuration.
 
-<<<<<<< HEAD
 ## User Roles
 =======
 Users can:
@@ -73,11 +68,9 @@ The application uses a custom `CustomUser` model based on Django's `AbstractUser
 ### Role-Based Permissions
 
 The application uses Django groups and permissions for the different user roles.
->>>>>>> bdcd5a427dd9d9bbd9b59c5c6e8c477bf069d32c
 
 #### Reader
 
-<<<<<<< HEAD
 Readers can view approved articles and newsletters and subscribe to publishers and individual journalists. They can access content relevant to their subscriptions.
 =======
 Readers can:
@@ -93,11 +86,9 @@ Readers can:
 * View articles from their subscriptions.
 
 Readers cannot create, edit, delete, or approve articles.
->>>>>>> bdcd5a427dd9d9bbd9b59c5c6e8c477bf069d32c
 
 #### Journalist
 
-<<<<<<< HEAD
 Journalists can create and manage articles and newsletters. Articles must be approved by an editor before becoming available to readers. Journalists can also publish independently or associate their articles with a publisher, depending on the application workflow.
 =======
 Journalists can:
@@ -123,11 +114,9 @@ Journalists can:
 * Remove articles from newsletters.
 
 New articles created by journalists require editor approval before being publicly available if they are published by a registered publication. Journalists can also choose to publish their articles independently.
->>>>>>> bdcd5a427dd9d9bbd9b59c5c6e8c477bf069d32c
 
 #### Editor
 
-<<<<<<< HEAD
 Editors can review articles, approve submitted content, and manage articles and newsletters according to their assigned permissions.
 =======
 Editors can:
@@ -145,13 +134,11 @@ Editors can:
 * View, update, and delete newsletters associated with their publication.
 
 Editors are responsible for reviewing articles before they become approved.
->>>>>>> bdcd5a427dd9d9bbd9b59c5c6e8c477bf069d32c
 
 #### Publisher
 
 Publishers can manage their publications, assign journalists and editors, and access content associated with their publication.
 
-<<<<<<< HEAD
 ## Technology Stack
 
 - **Programming Language:** Python
