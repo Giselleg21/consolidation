@@ -153,7 +153,6 @@ Dependency versions are specified in `requirements.txt`.
 
 ## Project Structure
 
-```text
 consolidation/
 ├── News/
 =======
