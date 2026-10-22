@@ -278,17 +278,23 @@ The project follows Django's standard project and application structure. The rep
 consolidation/
 │
 ├── news/
+│   ├── management/
+│   │   └── commands/
 │   ├── migrations/
 │   ├── static/
 │   │   └── News/
 │   ├── templates/
 │   │   └── News/
+│   ├── __init__.py
 │   ├── admin.py
+│   ├── api_urls.py
+│   ├── api_views.py
 │   ├── apps.py
 │   ├── forms.py
 │   ├── models.py
 │   ├── serializers.py
 │   ├── signals.py
+│   ├── tests.py
 │   ├── urls.py
 │   └── views.py
 │
@@ -545,7 +551,7 @@ Run the automated tests:
 python manage.py test
 ```
 
-The tests should complete successfully before using the application. The project currently has 30 automated tests, all of which pass successfully.
+The tests should complete successfully before using the application. The project currently has 38 automated tests, all of which pass successfully.
 
 Review the test output and error messages to identify any configuration problems or failing tests.
 
@@ -690,16 +696,19 @@ The Dockerfile installs the system dependencies required for database connectivi
 
 ### 3. Run the Container
 
-Start the application using:
+The container does not include a database. Before running it, MariaDB/MySQL must be installed and running on your computer, and the database must already be created and migrated (see [Installation](#installation), steps 4, 5, 7 and 8).
+
+Start the application, telling it where the database is with `DB_HOST`:
 
 ```bash
 docker run -d \
     --name consolidation-test \
     -p 8000:8000 \
+    -e DB_HOST=host.docker.internal \
     consolidation
 ```
 
-(On Windows PowerShell, put the command on one line: `docker run -d --name consolidation-test -p 8000:8000 consolidation`.)
+(On Windows PowerShell, put the command on one line: `docker run -d --name consolidation-test -p 8000:8000 -e DB_HOST=host.docker.internal consolidation`.)
 
 The application will be available at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
@@ -707,9 +716,13 @@ The container runs Django's development server on port `8000`, with automatic co
 
 ### Database Configuration in Docker
 
-The application uses MariaDB/MySQL. Ensure that the database server is running and accessible from the container, and that the Django database settings are configured correctly.
+The application uses MariaDB/MySQL. Inside a container, `localhost` refers to the container itself, not your computer, so the container cannot find a database running on your computer through `localhost`.
 
-Inside a container, `localhost` refers to the container itself, not your computer. If the database runs on the host machine and you use Docker Desktop on macOS or Windows, the hostname `host.docker.internal` can commonly be used as the database `HOST` to reach it from the container, provided the database accepts the connection.
+To solve this, `settings.py` reads the database host from the `DB_HOST` environment variable and uses `localhost` when it is not set. This means running the application normally (outside Docker) needs no extra configuration.
+
+* **Docker Desktop (macOS and Windows):** use `-e DB_HOST=host.docker.internal`, as shown above, to reach the database on your computer.
+* **Linux (Docker Engine):** `host.docker.internal` is not available by default. Add `--add-host=host.docker.internal:host-gateway` to the `docker run` command, or set `DB_HOST` to your computer's IP address.
+* **Connection errors:** if the container stops immediately, run `docker logs consolidation-test`. A "Can't connect" error means the database is not running or `DB_HOST` is wrong. If the error says access is denied, the database user may not be allowed to connect from outside `localhost`; grant it access using a host that matches your setup.
 
 ### Useful Docker Commands
 
