@@ -65,7 +65,7 @@ def register(request):
     else:
         form = RegistrationForm()
 
-    return render(request, 'news/register.html', {
+    return render(request, 'News/register.html', {
         'form': form
     })
 
@@ -102,7 +102,7 @@ def logout_confirm(request):
 
     return render(
         request,
-        'news/logout_confirm.html'
+        'News/logout_confirm.html'
     )
 
 
@@ -129,7 +129,7 @@ def reader_subscriptions(request):
 
     return render(
         request,
-        'news/reader_subscriptions.html',
+        'News/reader_subscriptions.html',
         {'form': form}
     )
 
@@ -164,7 +164,7 @@ def unsubscribe_from_journalist(request, article_id):
         request.user.journalist_subscriptions.remove(author)
         return redirect('article_detail', article_id=article_id)
 
-    return render(request, 'news/confirm_unsubscribe_from_journalist.html',
+    return render(request, 'News/confirm_unsubscribe_from_journalist.html',
                   {'article': article})
 
 
@@ -200,7 +200,7 @@ def unsubscribe_from_publication(request, article_id):
             request.user.publisher_subscriptions.remove(publisher)
         return redirect('article_detail', article_id=article_id)
 
-    return render(request, 'news/confirm_unsubscribe_from_publication.html',
+    return render(request, 'News/confirm_unsubscribe_from_publication.html',
                            {'article': article})
 
 
@@ -211,7 +211,7 @@ def review_articles(request):
         request.user.role == 'editor'
         or request.user.groups.filter(name='Editor').exists()
     ):
-        return render(request, 'news/access_denied.html', status=403)
+        return render(request, 'News/access_denied.html', status=403)
 
     articles = Article.objects.filter(approved=False,
                                       publisher__isnull=False).order_by(
@@ -219,7 +219,7 @@ def review_articles(request):
 
     return render(
         request,
-        'news/review_articles.html',
+        'News/review_articles.html',
         {'articles': articles}
     )
 
@@ -232,7 +232,7 @@ def review_article_detail(request, article_id):
 
     return render(
         request,
-        'news/review_article_detail.html',
+        'News/review_article_detail.html',
         {
             'article': article,
         }
@@ -249,7 +249,7 @@ def my_articles(request):
 
     return render(
         request,
-        'news/my_articles.html',
+        'News/my_articles.html',
         {'articles': articles}
     )
 
@@ -264,7 +264,7 @@ def my_newsletters(request):
 
     return render(
         request,
-        'news/my_newsletters.html',
+        'News/my_newsletters.html',
         {'newsletters': newsletters}
     )
 
@@ -276,7 +276,7 @@ def approve_article(request, article_id):
         request.user.role == 'editor'
         or request.user.groups.filter(name='Editor').exists()
     ):
-        return render(request, 'news/access_denied.html', status=403)
+        return render(request, 'News/access_denied.html', status=403)
 
     article = get_object_or_404(Article, id=article_id)
 
@@ -288,7 +288,7 @@ def approve_article(request, article_id):
 
     return render(
         request,
-        'news/approve_article.html',
+        'News/approve_article.html',
         {'article': article}
     )
 
@@ -301,7 +301,7 @@ def publish_independently(request, article_id):
         request.user.role == 'journalist'
         or request.user.groups.filter(name='Journalist').exists()
     ):
-        return render(request, 'news/access_denied.html', status=403)
+        return render(request, 'News/access_denied.html', status=403)
 
     article = get_object_or_404(Article, id=article_id)
 
@@ -313,7 +313,7 @@ def publish_independently(request, article_id):
 
     return render(
         request,
-        'news/publish_independently.html',
+        'News/publish_independently.html',
         {'article': article}
     )
 
@@ -347,13 +347,13 @@ def article_list(request):
     else:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
     return render(
         request,
-        'news/article_list.html',
+        'News/article_list.html',
         {
             'articles': articles
         }
@@ -363,7 +363,7 @@ def article_list(request):
 def article_detail(request, article_id):
     '''Display the details of a single article.'''
     article = get_object_or_404(Article, id=article_id)
-    return render(request, 'news/article_detail.html', {
+    return render(request, 'News/article_detail.html', {
                   'article': article})
 
 
@@ -392,7 +392,7 @@ def article_create(request):
 
     return render(
         request,
-        'news/article_form.html',
+        'News/article_form.html',
         {
             'form': form,
         }
@@ -406,7 +406,7 @@ def article_update(request, article_id):
     if request.user.role not in ['journalist', 'editor']:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -419,7 +419,7 @@ def article_update(request, article_id):
         if article.author != request.user:
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -444,7 +444,7 @@ def article_update(request, article_id):
 
     return render(
         request,
-        'news/article_update.html',
+        'News/article_update.html',
         {
             'form': form,
             'article': article
@@ -459,7 +459,7 @@ def article_delete(request, article_id):
     if request.user.role not in ['journalist', 'editor']:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -472,7 +472,7 @@ def article_delete(request, article_id):
         if article.author != request.user:
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -485,7 +485,7 @@ def article_delete(request, article_id):
 
     return render(
         request,
-        'news/article_confirm_delete.html',
+        'News/article_confirm_delete.html',
         {'article': article}
     )
 
@@ -532,7 +532,7 @@ def newsletter_list(request):
     else:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -540,7 +540,7 @@ def newsletter_list(request):
 
     return render(
         request,
-        'news/newsletter_list.html',
+        'News/newsletter_list.html',
         {'newsletters': newsletters}
     )
 
@@ -554,7 +554,7 @@ def newsletter_detail(request, newsletter_id):
 
     return render(
         request,
-        'news/newsletter_detail.html',
+        'News/newsletter_detail.html',
         {'newsletter': newsletter}
     )
 
@@ -568,7 +568,7 @@ def newsletter_create(request):
     if request.user.role not in ['journalist', 'editor']:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -590,7 +590,7 @@ def newsletter_create(request):
 
     return render(
         request,
-        'news/newsletter_form.html',
+        'News/newsletter_form.html',
         {'form': form,
          'articles': articles, }
     )
@@ -603,7 +603,7 @@ def newsletter_update(request, newsletter_id):
     if request.user.role not in ['journalist', 'editor']:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -616,7 +616,7 @@ def newsletter_update(request, newsletter_id):
         if newsletter.author != request.user:
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -627,7 +627,7 @@ def newsletter_update(request, newsletter_id):
         ).exists():
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -649,7 +649,7 @@ def newsletter_update(request, newsletter_id):
 
     return render(
         request,
-        'news/newsletter_update.html',
+        'News/newsletter_update.html',
         {
             'form': form,
             'newsletter': newsletter
@@ -664,7 +664,7 @@ def newsletter_delete(request, newsletter_id):
     if request.user.role not in ['journalist', 'editor']:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -677,7 +677,7 @@ def newsletter_delete(request, newsletter_id):
         if newsletter.author != request.user:
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -685,7 +685,7 @@ def newsletter_delete(request, newsletter_id):
         if newsletter.author != request.user:
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -698,7 +698,7 @@ def newsletter_delete(request, newsletter_id):
 
     return render(
         request,
-        'news/newsletter_confirm_delete.html',
+        'News/newsletter_confirm_delete.html',
         {'newsletter': newsletter}
     )
 
@@ -713,7 +713,7 @@ def newsletter_article_detail(request, article_id):
 
     return render(
         request,
-        'news/newsletter_article_detail.html',
+        'News/newsletter_article_detail.html',
         {
             'article': article,
             'newsletter': newsletter
@@ -722,7 +722,7 @@ def newsletter_article_detail(request, article_id):
 
 
 def access_denied(request):
-    return render(request, 'news/access_denied.html')
+    return render(request, 'News/access_denied.html')
 
 
 @login_required
@@ -732,7 +732,7 @@ def remove_article_from_newsletter(request, newsletter_id, article_id):
     if request.user.role not in ['journalist', 'editor']:
         return render(
             request,
-            'news/access_denied.html',
+            'News/access_denied.html',
             status=403
         )
 
@@ -750,7 +750,7 @@ def remove_article_from_newsletter(request, newsletter_id, article_id):
         if newsletter.author != request.user:
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -761,7 +761,7 @@ def remove_article_from_newsletter(request, newsletter_id, article_id):
         ).exists():
             return render(
                 request,
-                'news/access_denied.html',
+                'News/access_denied.html',
                 status=403
             )
 
@@ -774,7 +774,7 @@ def remove_article_from_newsletter(request, newsletter_id, article_id):
 
     return render(
         request,
-        'news/newsletter_article_confirm_remove.html',
+        'News/newsletter_article_confirm_remove.html',
         {
             'newsletter': newsletter,
             'article': article
@@ -809,7 +809,7 @@ def publisher_create(request):
 
     return render(
         request,
-        'news/publisher_create.html',
+        'News/publisher_create.html',
         {'form': form}
     )
 
@@ -843,7 +843,7 @@ def manage_journalists(request):
 
     return render(
         request,
-        'news/manage_journalists.html',
+        'News/manage_journalists.html',
         {
             'publisher': publisher,
             'journalists': journalists,
@@ -880,7 +880,7 @@ def manage_editors(request):
 
     return render(
         request,
-        'news/manage_editors.html',
+        'News/manage_editors.html',
         {
             'publisher': publisher,
             'editors': editors,
@@ -902,7 +902,7 @@ def view_publication(request):
 
     return render(
         request,
-        'news/view_publication.html',
+        'News/view_publication.html',
         {'publisher': publisher}
     )
 
@@ -925,7 +925,7 @@ def publisher_delete(request):
 
     return render(
         request,
-        'news/publisher_confirm_delete.html',
+        'News/publisher_confirm_delete.html',
         {'publisher': publisher}
     )
 
@@ -955,6 +955,6 @@ def publisher_update(request):
 
     return render(
         request,
-        'news/publisher_update.html',
+        'News/publisher_update.html',
         {'form': form, 'publisher': publisher}
     )

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>News.models &mdash; Consolidation 00.00.01 documentation</title>
+  <title>news.models &mdash; Consolidation 00.00.01 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -61,7 +61,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">News.models</li>
+      <li class="breadcrumb-item active">news.models</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -70,13 +70,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for News.models</h1><div class="highlight"><pre>
+  <h1>Source code for news.models</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractUser</span>
 
 
 <div class="viewcode-block" id="CustomUser">
-<a class="viewcode-back" href="../../News.html#News.forms.CustomUser">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.CustomUser">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CustomUser</span><span class="p">(</span><span class="n">AbstractUser</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">''' Model representing a user with a specific</span>
 <span class="sd">    role and subscription relationships.</span>
@@ -122,7 +122,7 @@
 
 
 <div class="viewcode-block" id="Publisher">
-<a class="viewcode-back" href="../../News.html#News.forms.Publisher">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.Publisher">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''Model representing publishers of articles and newsletters.</span>
 
@@ -151,7 +151,7 @@
 
 
 <div class="viewcode-block" id="Article">
-<a class="viewcode-back" href="../../News.html#News.forms.Article">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.Article">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Article</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''Model representing articles created by journalists.</span>
 
@@ -181,7 +181,7 @@
 
 
 <div class="viewcode-block" id="Newsletter">
-<a class="viewcode-back" href="../../News.html#News.forms.Newsletter">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.Newsletter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Newsletter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''Model representing collections of articles.</span>
 

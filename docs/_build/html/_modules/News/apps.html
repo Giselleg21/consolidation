@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>News.apps &mdash; Consolidation 00.00.01 documentation</title>
+  <title>news.apps &mdash; Consolidation 00.00.01 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -61,7 +61,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">News.apps</li>
+      <li class="breadcrumb-item active">news.apps</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -70,21 +70,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for News.apps</h1><div class="highlight"><pre>
+  <h1>Source code for news.apps</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppConfig</span>
 
 
 <div class="viewcode-block" id="NewsConfig">
-<a class="viewcode-back" href="../../News.html#News.apps.NewsConfig">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.apps.NewsConfig">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NewsConfig</span><span class="p">(</span><span class="n">AppConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''Load and register signal handlers when Django is started up.'''</span>
     <span class="n">default_auto_field</span> <span class="o">=</span> <span class="s1">'django.db.models.BigAutoField'</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">'News'</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">'news'</span>
 
 <div class="viewcode-block" id="NewsConfig.ready">
-<a class="viewcode-back" href="../../News.html#News.apps.NewsConfig.ready">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.apps.NewsConfig.ready">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">News.signals</span></div>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">news.signals</span></div>
 </div>
 
 </pre></div>

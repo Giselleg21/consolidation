@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>News.api_views &mdash; Consolidation 00.00.01 documentation</title>
+  <title>news.api_views &mdash; Consolidation 00.00.01 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -61,7 +61,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">News.api_views</li>
+      <li class="breadcrumb-item active">news.api_views</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -70,7 +70,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for News.api_views</h1><div class="highlight"><pre>
+  <h1>Source code for news.api_views</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">api_view</span><span class="p">,</span> <span class="n">permission_classes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.permissions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsAuthenticated</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.response</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
@@ -82,7 +82,7 @@
 
 
 <div class="viewcode-block" id="article_api_list">
-<a class="viewcode-back" href="../../News.html#News.api_views.article_api_list">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.api_views.article_api_list">[docs]</a>
 <span class="nd">@api_view</span><span class="p">([</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'POST'</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">article_api_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -121,7 +121,7 @@
 
 
 <div class="viewcode-block" id="article_api_detail">
-<a class="viewcode-back" href="../../News.html#News.api_views.article_api_detail">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.api_views.article_api_detail">[docs]</a>
 <span class="nd">@api_view</span><span class="p">([</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'PUT'</span><span class="p">,</span> <span class="s1">'DELETE'</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">article_api_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">article_id</span><span class="p">):</span>
@@ -142,7 +142,9 @@
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">ArticleSerializer</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'journalist'</span><span class="p">,</span> <span class="s1">'editor'</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'journalist'</span><span class="p">,</span> <span class="s1">'editor'</span><span class="p">]</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s1">'journalist'</span>
+            <span class="ow">and</span> <span class="n">article</span><span class="o">.</span><span class="n">author</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
             <span class="p">{</span><span class="s1">'error'</span><span class="p">:</span> <span class="s1">'You do not have permission to modify articles.'</span><span class="p">},</span>
             <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span>
@@ -173,7 +175,7 @@
 
 
 <div class="viewcode-block" id="subscribed_articles_api">
-<a class="viewcode-back" href="../../News.html#News.api_views.subscribed_articles_api">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.api_views.subscribed_articles_api">[docs]</a>
 <span class="nd">@api_view</span><span class="p">([</span><span class="s1">'GET'</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">subscribed_articles_api</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -213,7 +215,7 @@
 
 
 <div class="viewcode-block" id="approved_article_api">
-<a class="viewcode-back" href="../../News.html#News.api_views.approved_article_api">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.api_views.approved_article_api">[docs]</a>
 <span class="nd">@api_view</span><span class="p">([</span><span class="s1">'POST'</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">approved_article_api</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Receive an article after it has been approved."""</span>

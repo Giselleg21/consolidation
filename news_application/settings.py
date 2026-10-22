@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,7 +84,7 @@ DATABASES = {
         'NAME': 'news_database',
         'USER': 'news_user',
         'PASSWORD': 'news_password',
-        'HOST': 'localhost',
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': '3306',
         'TEST': {
             'NAME': 'test_news_database_capstone',

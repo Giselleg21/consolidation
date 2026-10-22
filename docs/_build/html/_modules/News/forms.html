@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>News.forms &mdash; Consolidation 00.00.01 documentation</title>
+  <title>news.forms &mdash; Consolidation 00.00.01 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -61,7 +61,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">News.forms</li>
+      <li class="breadcrumb-item active">news.forms</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -70,14 +70,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for News.forms</h1><div class="highlight"><pre>
+  <h1>Source code for news.forms</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreationForm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">Newsletter</span><span class="p">,</span> <span class="n">CustomUser</span><span class="p">,</span> <span class="n">Publisher</span>
 
 
 <div class="viewcode-block" id="RegistrationForm">
-<a class="viewcode-back" href="../../News.html#News.forms.RegistrationForm">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.RegistrationForm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RegistrationForm</span><span class="p">(</span><span class="n">UserCreationForm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''The submitted format for users to register on the application.'''</span>
     <span class="n">ROLE_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
@@ -90,7 +90,7 @@
     <span class="n">role</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ChoiceField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">ROLE_CHOICES</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RegistrationForm.Meta">
-<a class="viewcode-back" href="../../News.html#News.forms.RegistrationForm.Meta">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.RegistrationForm.Meta">[docs]</a>
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">CustomUser</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
@@ -103,9 +103,8 @@
 
 
 <div class="viewcode-block" id="RegistrationForm.clean_email">
-<a class="viewcode-back" href="../../News.html#News.forms.RegistrationForm.clean_email">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.RegistrationForm.clean_email">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clean_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">'''Validate that the email address is not already registered.'''</span>
         <span class="n">email</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">'email'</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -119,33 +118,52 @@
 
 
 <div class="viewcode-block" id="ArticleForm">
-<a class="viewcode-back" href="../../News.html#News.forms.ArticleForm">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.ArticleForm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ArticleForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''The submitted format for articles'''</span>
+
 <div class="viewcode-block" id="ArticleForm.Meta">
-<a class="viewcode-back" href="../../News.html#News.forms.ArticleForm.Meta">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.ArticleForm.Meta">[docs]</a>
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">Article</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'content'</span><span class="p">]</span></div>
-</div>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'content'</span><span class="p">,</span> <span class="s1">'publisher'</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">'publisher'</span><span class="p">]</span><span class="o">.</span><span class="n">empty_label</span> <span class="o">=</span> <span class="s1">'Publish Independently'</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">'publisher'</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">journalists</span><span class="o">=</span><span class="n">user</span>
+        <span class="p">)</span> <span class="k">if</span> <span class="n">user</span> <span class="k">else</span> <span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="NewsletterForm">
-<a class="viewcode-back" href="../../News.html#News.forms.NewsletterForm">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.NewsletterForm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NewsletterForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''The submitted format for Newsletters'''</span>
 <div class="viewcode-block" id="NewsletterForm.Meta">
-<a class="viewcode-back" href="../../News.html#News.forms.NewsletterForm.Meta">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.NewsletterForm.Meta">[docs]</a>
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">Newsletter</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'description'</span><span class="p">,</span> <span class="s1">'articles'</span><span class="p">]</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">'articles'</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">approved</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">'articles'</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">'articles'</span><span class="p">]</span><span class="o">.</span><span class="n">empty_label</span> <span class="o">=</span> <span class="s2">"No articles available"</span></div>
 
 
 
 <div class="viewcode-block" id="PublisherForm">
-<a class="viewcode-back" href="../../News.html#News.forms.PublisherForm">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.PublisherForm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PublisherForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''Form used by publishers to create their publication.'''</span>
 
@@ -162,7 +180,7 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="PublisherForm.Meta">
-<a class="viewcode-back" href="../../News.html#News.forms.PublisherForm.Meta">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.PublisherForm.Meta">[docs]</a>
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">Publisher</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'journalists'</span><span class="p">,</span> <span class="s1">'editors'</span><span class="p">]</span></div>
@@ -171,15 +189,41 @@
 
 
 <div class="viewcode-block" id="PublisherNameForm">
-<a class="viewcode-back" href="../../News.html#News.forms.PublisherNameForm">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.PublisherNameForm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PublisherNameForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''Form used to update only the name of a publication.'''</span>
 
 <div class="viewcode-block" id="PublisherNameForm.Meta">
-<a class="viewcode-back" href="../../News.html#News.forms.PublisherNameForm.Meta">[docs]</a>
+<a class="viewcode-back" href="../../News.html#news.forms.PublisherNameForm.Meta">[docs]</a>
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">Publisher</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'name'</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ReaderSubscriptionForm">
+<a class="viewcode-back" href="../../News.html#news.forms.ReaderSubscriptionForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReaderSubscriptionForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''Form used for readers to subscribe to publishers and journalists.'''</span>
+
+    <span class="n">journalist_subscriptions</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelMultipleChoiceField</span><span class="p">(</span>
+        <span class="n">queryset</span><span class="o">=</span><span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s1">'journalist'</span><span class="p">),</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">CheckboxSelectMultiple</span>
+    <span class="p">)</span>
+
+    <span class="n">publisher_subscriptions</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelMultipleChoiceField</span><span class="p">(</span>
+        <span class="n">queryset</span><span class="o">=</span><span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">CheckboxSelectMultiple</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="ReaderSubscriptionForm.Meta">
+<a class="viewcode-back" href="../../News.html#news.forms.ReaderSubscriptionForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">CustomUser</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'journalist_subscriptions'</span><span class="p">,</span> <span class="s1">'publisher_subscriptions'</span><span class="p">]</span></div>
 </div>
 
 </pre></div>

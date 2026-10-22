@@ -15,7 +15,7 @@ Submodules
 News.admin module
 -----------------
 
-.. automodule:: News.admin
+.. automodule:: news.admin
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ News.admin module
 News.api\_views module
 ----------------------
 
-.. automodule:: News.api_views
+.. automodule:: news.api_views
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ News.api\_views module
 News.apps module
 ----------------
 
-.. automodule:: News.apps
+.. automodule:: news.apps
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ News.apps module
 News.forms module
 -----------------
 
-.. automodule:: News.forms
+.. automodule:: news.forms
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +47,7 @@ News.forms module
 News.models module
 ------------------
 
-.. automodule:: News.models
+.. automodule:: news.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +55,7 @@ News.models module
 News.serializers module
 -----------------------
 
-.. automodule:: News.serializers
+.. automodule:: news.serializers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +63,7 @@ News.serializers module
 News.signals module
 -------------------
 
-.. automodule:: News.signals
+.. automodule:: news.signals
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +71,7 @@ News.signals module
 News.tests module
 -----------------
 
-.. automodule:: News.tests
+.. automodule:: news.tests
    :members:
    :undoc-members:
    :show-inheritance:
@@ -79,7 +79,7 @@ News.tests module
 News.urls module
 ----------------
 
-.. automodule:: News.urls
+.. automodule:: news.urls
    :members:
    :undoc-members:
    :show-inheritance:
@@ -87,7 +87,7 @@ News.urls module
 News.views module
 -----------------
 
-.. automodule:: News.views
+.. automodule:: news.views
    :members:
    :undoc-members:
    :show-inheritance:
@@ -95,7 +95,7 @@ News.views module
 Module contents
 ---------------
 
-.. automodule:: News
+.. automodule:: news
    :members:
    :undoc-members:
    :show-inheritance:

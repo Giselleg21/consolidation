@@ -7,7 +7,7 @@ Submodules
 News\_application.asgi module
 -----------------------------
 
-.. automodule:: News_application.asgi
+.. automodule:: news_application.asgi
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ News\_application.asgi module
 News\_application.settings module
 ---------------------------------
 
-.. automodule:: News_application.settings
+.. automodule:: news_application.settings
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ News\_application.settings module
 News\_application.urls module
 -----------------------------
 
-.. automodule:: News_application.urls
+.. automodule:: news_application.urls
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ News\_application.urls module
 News\_application.wsgi module
 -----------------------------
 
-.. automodule:: News_application.wsgi
+.. automodule:: news_application.wsgi
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ News\_application.wsgi module
 Module contents
 ---------------
 
-.. automodule:: News_application
+.. automodule:: news_application
    :members:
    :undoc-members:
    :show-inheritance:
