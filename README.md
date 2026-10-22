@@ -154,19 +154,6 @@ Publishers can manage their publications, assign journalists and editors, and ac
 
 Publishers are responsible for managing the journalists and editors associated with their publication.
 
-## Technology Stack
-
-- **Programming Language:** Python
-- **Web Framework:** Django
-- **REST API:** Django REST Framework
-- **Database:** MariaDB/MySQL
-- **Frontend:** HTML, CSS, Bootstrap, and Django templates
-- **Documentation:** Sphinx
-- **Containerisation:** Docker
-- **Version Control:** Git and GitHub
-
-Dependency versions are specified in `requirements.txt`.
-
 ## Articles
 
 Articles contain:
@@ -379,13 +366,42 @@ Contains:
 
 ---
 
+## Technology Stack
+
+- **Programming Language:** Python
+- **Web Framework:** Django
+- **REST API:** Django REST Framework
+- **Database:** MariaDB/MySQL
+- **Frontend:** HTML, CSS, Bootstrap, and Django templates
+- **Documentation:** Sphinx
+- **Containerisation:** Docker
+- **Version Control:** Git and GitHub
+
+Dependency versions are specified in `requirements.txt`.
+
 ## Project Structure
 
-news_application/
-├── manage.py
+consolidation/
+├── Dockerfile
+├── README.md
 ├── requirements.txt
+├── manage.py
 ├── news/
-└── news_application/
+│   ├── models.py
+│   ├── views.py
+│   ├── forms.py
+│   ├── serializers.py
+│   ├── api_views.py
+│   ├── api_urls.py
+│   ├── urls.py
+│   ├── admin.py
+│   └── tests.py
+├── news_application/
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   └── wsgi.py
+└── docs/
 
 ---
 
