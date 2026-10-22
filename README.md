@@ -138,24 +138,6 @@ Editors are responsible for reviewing articles before they become approved.
 
 Publishers can manage their publications, assign journalists and editors, and access content associated with their publication.
 
-## Technology Stack
-
-- **Programming Language:** Python
-- **Web Framework:** Django
-- **REST API:** Django REST Framework
-- **Database:** MariaDB/MySQL
-- **Frontend:** HTML, CSS, Bootstrap, and Django templates
-- **Documentation:** Sphinx
-- **Containerisation:** Docker
-- **Version Control:** Git and GitHub
-
-Dependency versions are specified in `requirements.txt`.
-
-## Project Structure
-
-consolidation/
-├── News/
-=======
 * Create a publication.
 
 * Update their publication.
@@ -172,7 +154,18 @@ consolidation/
 
 Publishers are responsible for managing the journalists and editors associated with their publication.
 
----
+## Technology Stack
+
+- **Programming Language:** Python
+- **Web Framework:** Django
+- **REST API:** Django REST Framework
+- **Database:** MariaDB/MySQL
+- **Frontend:** HTML, CSS, Bootstrap, and Django templates
+- **Documentation:** Sphinx
+- **Containerisation:** Docker
+- **Version Control:** Git and GitHub
+
+Dependency versions are specified in `requirements.txt`.
 
 ## Articles
 
@@ -383,6 +376,16 @@ Contains:
 * Author
 
 * Articles
+
+---
+
+## Project Structure
+
+news_application/
+├── manage.py
+├── requirements.txt
+├── news/
+└── news_application/
 
 ---
 
